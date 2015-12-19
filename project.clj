@@ -17,7 +17,6 @@
                  [environ "1.0.1"]
                  [org.clojure/clojurescript "1.7.145" :scope "provided"]
                  [secretary "1.2.3"]
-                 
                  ]
 
   :plugins [[lein-environ "1.0.1"]
@@ -72,7 +71,8 @@
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.4.1"]
-                             [lein-cljsbuild "1.1.0"]]
+                             [lein-cljsbuild "1.1.0"]
+                             [com.cemerick/clojurescript.test "0.3.3"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
                                 (pjstadig.humane-test-output/activate!)]
@@ -91,10 +91,17 @@
                                               :compiler {:main "russyll.dev"
                                                          :source-map true}}
 
-
+                                       :test {:source-paths ["src/cljs/russyll"]
+                                              :compiler {:output-to "target/test.js"
+                                                         :optimizations :simple
+                                                         :pretty-print true}}
                                         }
+                               :test-commands {"unit" ["node" :node-runner "target/test.js"]}
 
-                               }}
+                               }
+
+
+                   }
 
              :uberjar {:hooks [leiningen.cljsbuild minify-assets.plugin/hooks]
                        :env {:production true}
@@ -106,5 +113,5 @@
                                               :compiler
                                               {:optimizations :advanced
                                                :pretty-print false}}
-                                             :server {} 
+                                             :server {}
                                             }}}})
