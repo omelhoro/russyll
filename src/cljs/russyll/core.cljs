@@ -13,7 +13,8 @@
     [orphoep :only [orpho-single ++ --]]
     [usertest :only [serve-words-rand calc-stats]]
     )
-  (:import goog.History))
+  (:import goog.History)
+  )
 
 ;; -------------------------
 ;; Views
@@ -62,6 +63,8 @@
 
 (def table-syllabied (r/atom {}))
 
+(def splitted-mapped-atom (r/atom []))
+
 (def current-model (r/atom 0))
 
 (defn syllaby [text-val]
@@ -69,8 +72,10 @@
         splitted-t (text/tokenize text-val "'")
         map-words (text/set-of-vals splitted-t)
         text-done (++ (text/text-by-model splitted-t map-words @current-model))
+        splitted-mapped (map #(vector % (get map-words %)) splitted-t)
         ]
     (do
+      (swap! splitted-mapped-atom #(-> splitted-mapped))
       (swap! table-syllabied #(-> map-words))
       (swap! text-syllabied #(-> text-done))
       )
@@ -86,24 +91,26 @@
    ])
 
 (defn textarea []
-  [:div
-   [:h2.ribbon "Put in some data!"]
-   [:select.form-control {:on-change (fn [evt] (do (swap! current-model #(-> evt .-target .-value)) (syllaby @text-in))) :value @current-model}
-    (for [{:keys [name i]} models]
-      [:option {:value i :key i} name])
-    ]
-   [:textarea {:style textarea-style :on-change (fn [evt] (do (swap! text-in #(-> evt .-target .-value)) (syllaby @text-in))) :value @text-in}]
-   [:pre @text-syllabied]
-   [:table.table.table-striped.table-bordered.table-hover.table-condensed.syllabied
-    [:tr [:th] (for [{:keys [short name]} models] [:th {:key name :title name} short])]
-    (for
-      [word-row @table-syllabied]
-      [:tr {:key (key word-row)} [:td (key word-row)]
-       (map-indexed (fn [ix word] [:td {:key ix} word]) (val word-row))
-       ]
-      )
-    ]
-   ]
+  (let [table @table-syllabied]
+    [:div
+     [:h2.ribbon "Put in some data!"]
+     [:select.form-control {:on-change (fn [evt] (do (swap! current-model #(-> evt .-target .-value)) (syllaby @text-in))) :value @current-model}
+      (for [{:keys [name i]} models]
+        [:option {:value i :key i} name])
+      ]
+     [:textarea {:style textarea-style :on-change (fn [evt] (do (swap! text-in #(-> evt .-target .-value)) (syllaby @text-in))) :value @text-in}]
+     [:pre @text-syllabied]
+     [:table.table.table-striped.table-bordered.table-hover.table-condensed.syllabied
+      [:tr [:th] (for [{:keys [short name]} models] [:th {:key name :title name} short])]
+      (for
+        [[word syll-models] @splitted-mapped-atom]
+        [:tr {:key (rand)} [:td word]
+         (map-indexed (fn [ix word] [:td {:key ix} word]) syll-models)
+         ]
+        )
+      ]
+     ]
+    )
   )
 
 (defn table-text []
