@@ -3,6 +3,7 @@ services:
   russyll:
     image: omelhoro1/russyll
     container_name: russyll
+    restart: on-failure:3
     # ports:
     #   - "3000:3000"
     environment:
