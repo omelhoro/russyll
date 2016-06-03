@@ -46,7 +46,8 @@
 
 (defn text-by-model [t s m]
   (map
-    #(let [map-models (s % %)] (if (vector? map-models) (map-models m) map-models))
+    #(let [map-models (s % %)]
+      (if (vector? map-models) (map-models m) map-models))
     t))
 
 (defn update-map-r [d i s n]
