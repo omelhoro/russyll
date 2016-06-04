@@ -1,14 +1,25 @@
-FROM node:6
+FROM clojure
+
+RUN apt-get install curl \
+  && curl --silent --location https://deb.nodesource.com/setup_6.x | bash - \
+  && apt-get install -y nodejs
 
 RUN mkdir /app
-ENV NODE_ENV production
+
 WORKDIR /app
 
+COPY ./project.clj /app
+RUN lein deps
+
 COPY ./package.json /app
-RUN npm install --loglevel silent
+RUN npm install
 
 COPY ./ /app
 
-CMD ["npm","start"]
+RUN lein cljsbuild once server
+RUN lein test
+RUN lein uberjar
+
+CMD ["node","app"]
 
 EXPOSE 5000
