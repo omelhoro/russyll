@@ -1,7 +1,7 @@
 build:
-  image: node:6
+  image: clojure
   commands:
-    - echo 1
+    - lein cljsbuild test
 deploy:
   rsync:
     user: $$PROD_USER
