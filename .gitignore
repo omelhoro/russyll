@@ -17,4 +17,5 @@ node_modules/
 *.iml
 *.map
 *.cache.edn
-out/**/*.cljs
+out/
+resources/public/js
