@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     # ports:
     #   - "3000:3000"
+    labels:
+      - "traefik.frontend.rule=Host:russyll.igor-fischer.rocks,russyll.fischerops.com"
     environment:
       - VIRTUAL_HOST=russyll.igor-fischer.rocks,russyll.fischerops.com
       - LETSENCRYPT_HOST=russyll.igor-fischer.rocks,russyll.fischerops.com
