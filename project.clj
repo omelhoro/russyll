@@ -6,7 +6,7 @@
 
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring-server "0.4.0"]
-                 [reagent "0.6.0"]
+                 [reagent "0.5.1"]
                  [reagent-forms "0.5.12"]
                  [reagent-utils "0.1.5"]
                  [ring "1.4.0"]
@@ -22,7 +22,7 @@
                  ]
 
   :plugins [[lein-cljsbuild "1.1.4"]
-  [lein-environ "1.0.1"]
+            [lein-environ "1.0.1"]
             [lein-asset-minifier "0.2.2"]]
 
   :ring {:handler russyll.handler/app
@@ -72,7 +72,8 @@
                                   [lein-figwheel "0.4.1"]
                                   [org.clojure/tools.nrepl "0.2.11"]
                                   [com.cemerick/piggieback "0.2.1"]
-                                  [pjstadig/humane-test-output "0.7.0"]]
+                                  [pjstadig/humane-test-output "0.7.0"]
+                                  [cider/cider-nrepl "0.13.0"]]
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.5.7"]
