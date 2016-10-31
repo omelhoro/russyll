@@ -4,28 +4,31 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :dependencies [[org.clojure/clojure "1.7.0"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring-server "0.4.0"]
-                 [reagent "0.5.1"]
+                 [reagent "0.6.0"]
                  [reagent-forms "0.5.12"]
                  [reagent-utils "0.1.5"]
                  [ring "1.4.0"]
+                 [re-frame "0.8.0"]
                  [ring/ring-defaults "0.1.5"]
                  [prone "0.8.2"]
                  [compojure "1.4.0"]
                  [hiccup "1.0.5"]
+                 [org.clojure/core.async "0.2.391"]
                  [environ "1.0.1"]
-                 [org.clojure/clojurescript "1.7.145" :scope "provided"]
+                 [org.clojure/clojurescript "1.9.229" :scope "provided"]
                  [secretary "1.2.3"]
                  ]
 
-  :plugins [[lein-environ "1.0.1"]
+  :plugins [[lein-cljsbuild "1.1.4"]
+            [lein-environ "1.0.1"]
             [lein-asset-minifier "0.2.2"]]
 
   :ring {:handler russyll.handler/app
          :uberwar-name "russyll.war"}
 
-  :min-lein-version "2.5.0"
+  :min-lein-version "2.5.3"
 
   :uberjar-name "russyll.jar"
 
@@ -53,7 +56,7 @@
                                  :compiler     {:output-dir    "out"
                                                 :output-to     "out/index.js"
                                                 :optimizations :none
-                                                :source-map    "src-maps"
+                                                :source-map    true
                                                 :target        :nodejs}
 
                                  }
@@ -62,16 +65,19 @@
 
   :profiles {:dev {:repl-options {:init-ns russyll.repl}
 
-                   :dependencies [[ring/ring-mock "0.3.0"]
+                   :dependencies [
+                                  [binaryage/devtools "0.8.2"]
+                                  [ring/ring-mock "0.3.0"]
                                   [ring/ring-devel "1.4.0"]
                                   [lein-figwheel "0.4.1"]
                                   [org.clojure/tools.nrepl "0.2.11"]
-                                  [com.cemerick/piggieback "0.1.5"]
-                                  [pjstadig/humane-test-output "0.7.0"]]
+                                  [com.cemerick/piggieback "0.2.1"]
+                                  [pjstadig/humane-test-output "0.7.0"]
+                                  [cider/cider-nrepl "0.13.0"]]
 
                    :source-paths ["env/dev/clj"]
-                   :plugins [[lein-figwheel "0.4.1"]
-                             [lein-cljsbuild "1.1.0"]
+                   :plugins [[lein-figwheel "0.5.7"]
+                             [lein-cljsbuild "1.1.4"]
                              [com.cemerick/clojurescript.test "0.3.3"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
@@ -93,6 +99,8 @@
 
                                        :test {:source-paths ["src/cljs/russyll"]
                                               :compiler {:output-to "target/test.js"
+                                                         :target :nodejs
+                                                         :hashbang false
                                                          :optimizations :simple
                                                          :pretty-print true}}
                                         }
