@@ -6,7 +6,7 @@
 
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring-server "0.4.0"]
-                 [reagent "0.5.1"]
+                 [reagent "0.6.0"]
                  [reagent-forms "0.5.12"]
                  [reagent-utils "0.1.5"]
                  [ring "1.4.0"]
@@ -99,6 +99,8 @@
 
                                        :test {:source-paths ["src/cljs/russyll"]
                                               :compiler {:output-to "target/test.js"
+                                                         :target :nodejs
+                                                         :hashbang false
                                                          :optimizations :simple
                                                          :pretty-print true}}
                                         }
