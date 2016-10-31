@@ -5,7 +5,7 @@ build:
     - curl --silent --location https://deb.nodesource.com/setup_7.x | bash -
     - apt-get install -y nodejs
     - npm i
-    - NODE_PATH=./node_modules lein cljsbuild test
+    - NODE_PATH=/drone/src/github.com/omelhoro/russyll/node_modules lein cljsbuild test
 deploy:
   rsync:
     user: $$PROD_USER
