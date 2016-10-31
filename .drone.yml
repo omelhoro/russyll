@@ -2,9 +2,10 @@ build:
   image: clojure
   commands:
     - apt-get install curl
-    - curl --silent --location https://deb.nodesource.com/setup_6.x | bash -
+    - curl --silent --location https://deb.nodesource.com/setup_7.x | bash -
     - apt-get install -y nodejs
-    - lein cljsbuild test
+    - npm i
+    - NODE_PATH=./node_modules lein cljsbuild test
 deploy:
   rsync:
     user: $$PROD_USER
