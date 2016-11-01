@@ -38,6 +38,7 @@
    :splitted-mapped-atom {}
    :current-model "0"
    :splitted=mapped []
+   :done false
    })
 
 ;; Subscriptions
@@ -59,7 +60,9 @@
 
 (defn choose-word [user-history]
   (let [choice (serve-words-rand)]
-    (if (contains? user-history choice) (choose-word user-history) choice)))
+    (if (contains? user-history choice)
+      (choose-word user-history)
+      choice)))
 
 (defn set-new-word [db _]
   (let [
@@ -73,7 +76,10 @@
 
 (defn end-or-continue [db how-many how-many-guessed]
   (if (>= how-many-guessed how-many)
-    (assoc db :result (calc-stats (:user-history db)))
+    (-> db
+        (assoc :result (calc-stats (:user-history db)))
+        (assoc :done true)
+        )
     (set-new-word db [])))
 
 (defn debug [db]
@@ -86,12 +92,11 @@
          n-of-separations (->> current-word (filter #(= \- %)) (count))
          k (clojure.string/replace current-word "-" "")
          user-history (:user-history db)
-         how-many-guessed (-> user-history (count) (inc))
+         how-many-guessed (-> user-history (count))
          ]
      (if (= n-of-separations 1)
        (-> db
            (assoc-in [:user-history k] current-word)
-
            (assoc :user-progress (* how-many-guessed (/ 100 how-many)))
            (end-or-continue how-many how-many-guessed)
                   )
@@ -195,6 +200,7 @@
         current-word (re-frame/subscribe [:key-in-db :current-word])
         user-history (re-frame/subscribe [:key-in-db :user-history])
         result (re-frame/subscribe [:key-in-db :result])
+        done (re-frame/subscribe [:key-in-db :done])
         ]
     (fn []
       [:div
@@ -204,14 +210,14 @@
         [:strong "Important: "]
         "Set the division with a dash '-': 'игорь' -> 'и-горь'. There will be 10 words to divide."
         [:div.input-group.col-sm-4
-         [:input.form-control {:value @current-word, :on-change #(re-frame/dispatch [:set-current-word (-> % .-target .-value)])}]
+         [:input.form-control {:disabled @done :value @current-word, :on-change #(re-frame/dispatch [:set-current-word (-> % .-target .-value)])}]
          [:div.input-group-btn
           [:button.btn.btn-default
-           {:on-click #(re-frame/dispatch [:next-word])} (if (-> (count @user-history) (= how-many)) "Result" "Next")]]]
+           {:disabled @done :on-click #(re-frame/dispatch [:next-word])} (if (-> (count @user-history) (= how-many)) "Result" "Next")]]]
         [:ul.list-group
          {:style {:margin-top "10px"}}
-         (for [[k v] @user-history]
-           [:li.list-group-item {:key k} (str k " -> " v)])]]
+         (for [[i [k v]] (zipmap (-> @user-history (count) (range)) @user-history)]
+           [:li.list-group-item {:key k} (str (inc i) ". " k " -> " v)])]]
        [:table.table
         [:tr
          (for [{:keys [short]} models] [:th {:key short}  short])] [:tr (for [v @result] [:td {:key (rand)} v])]]
