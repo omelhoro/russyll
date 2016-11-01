@@ -170,7 +170,12 @@
       [:div
        [:h2.ribbon (str "Put in some data!")]
        [:select.form-control
-        {:on-change (fn [evt] (do (re-frame/dispatch [:change-model (-> evt .-target .-value)]) (re-frame/dispatch [:syllaby @text-in]))) :value @current-model}
+        {
+         :on-change (fn [evt]
+                      (do
+                        (re-frame/dispatch [:change-model (-> evt .-target .-value)])
+                        (re-frame/dispatch [:syllaby @text-in])))
+         :value (or @current-model "")}
         (for [{:keys [name i]} models]
           [:option {:value i :key i} name])
         ]
@@ -179,13 +184,14 @@
          :on-change (fn [evt] (do (re-frame/dispatch [:change-text (-> evt .-target .-value)]) (re-frame/dispatch [:syllaby]))) :value @text-in}]
        [:pre @text-syllabied]
        [:table.table.table-striped.table-bordered.table-hover.table-condensed.syllabied
-        [:tr [:th] (for [{:keys [short name]} models] [:th {:key name :title name} short])]
-        (for
-            [[word syll-models] @splitted-mapped]
-          [:tr {:key (rand)} [:td word]
-           (map-indexed (fn [ix word] [:td {:key ix} word]) syll-models)
-           ]
-          )
+        [:tbody
+         [:tr [:th] (for [{:keys [short name]} models] [:th {:key name :title name} short])]
+         (for
+             [[word syll-models] (filter #(not= (first %) " ") @splitted-mapped)]
+           [:tr {:key (rand) :value (not= word " ")} [:td word]
+            (map-indexed (fn [ix word] [:td {:key ix} word]) syll-models)
+            ]
+           )]
         ]
        ]
       ))
@@ -206,7 +212,7 @@
       [:div
        [:h2.ribbon "Your turn!"]
        [:h4 "Here you can check yourself: Which model follows your intution?"]
-       [:p.well.bg-warning
+       [:div.well.bg-warning
         [:strong "Important: "]
         "Set the division with a dash '-': 'игорь' -> 'и-горь'. There will be 10 words to divide."
         [:div.input-group.col-sm-4
@@ -219,8 +225,9 @@
          (for [[i [k v]] (zipmap (-> @user-history (count) (range)) @user-history)]
            [:li.list-group-item {:key k} (str (inc i) ". " k " -> " v)])]]
        [:table.table
-        [:tr
-         (for [{:keys [short]} models] [:th {:key short}  short])] [:tr (for [v @result] [:td {:key (rand)} v])]]
+        [:tbody
+         [:tr
+          (for [{:keys [short]} models] [:th {:key short}  short])] [:tr (for [v @result] [:td {:key (rand)} v])]]]
        ((progress-tab))
        ])))
 
