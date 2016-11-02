@@ -1,10 +1,7 @@
 (ns orphoep_test
-
-
-
-         (:require-macros [cemerick.cljs.test
-                           :refer (is deftest with-test run-tests testing test-var)])
-         (:require        [cemerick.cljs.test :as t])
+  (:require
+   [cljs.test :refer-macros [deftest testing is]]
+   )
   (:use [test-data :only [orphoep-test]] [orphoep :only [unpal-e hard-pron cluster-assim
                         end-assim reg-assim-repl reg-pal
                         ogo-ovo chto-trans dash-rep dubcon orpho-single --]]))

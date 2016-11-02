@@ -78,10 +78,13 @@
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.5.7"]
                              [lein-cljsbuild "1.1.4"]
+                             [lein-doo "0.1.7"]
                              [com.cemerick/clojurescript.test "0.3.3"]]
 
-                   :injections [(require 'pjstadig.humane-test-output)
-                                (pjstadig.humane-test-output/activate!)]
+                   :injections [
+                                ; (require 'pjstadig.humane-test-output)
+                                ; (pjstadig.humane-test-output/activate!)
+                                ]
 
                    :figwheel {:http-server-root "public"
                               :server-port 3449
@@ -99,13 +102,11 @@
 
                                        :test {:source-paths ["src/cljs/russyll"]
                                               :compiler {:output-to "target/test.js"
-                                                         :target :nodejs
-                                                         :hashbang false
-                                                         :optimizations :simple
-                                                         :pretty-print true}}
+                                                         :output-dir "target/out"
+                                                         :main russyll.runner
+                                                         :optimizations :none
+                                                         }}
                                         }
-                               :test-commands {"unit" ["node" :node-runner "target/test.js"]}
-
                                }
 
 
