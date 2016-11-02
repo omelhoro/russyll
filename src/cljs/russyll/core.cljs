@@ -28,7 +28,7 @@
 (def how-many 10)
 (def app-db
   {
-   :user-history {}
+   :user-history []
    :user-progress 0
    :result  [0 0 0 0 0]
    :current-word "Igor"
@@ -60,7 +60,7 @@
 
 (defn choose-word [user-history]
   (let [choice (serve-words-rand)]
-    (if (contains? user-history choice)
+    (if (some (fn [[k v]] (= choice k)) user-history)
       (choose-word user-history)
       choice)))
 
@@ -70,7 +70,7 @@
         choice (choose-word user-history)
         ]
     (-> db
-        (assoc-in [:user-history choice] choice)
+        (update-in [:user-history] #(conj % [choice choice]))
         (assoc :current-word choice))
     ))
 
@@ -96,7 +96,7 @@
          ]
      (if (= n-of-separations 1)
        (-> db
-           (assoc-in [:user-history k] current-word)
+           (assoc-in [:user-history (-> user-history (count) (dec))] [k current-word])
            (assoc :user-progress (* how-many-guessed (/ 100 how-many)))
            (end-or-continue how-many how-many-guessed)
                   )
