@@ -5,19 +5,13 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [ring-server "0.4.0"]
                  [reagent "0.6.0"]
-                 [reagent-forms "0.5.12"]
                  [reagent-utils "0.1.5"]
-                 [ring "1.4.0"]
                  [re-frame "0.8.0"]
-                 [ring/ring-defaults "0.1.5"]
-                 [prone "0.8.2"]
-                 [compojure "1.4.0"]
                  [hiccup "1.0.5"]
                  [org.clojure/core.async "0.2.391"]
                  [environ "1.0.1"]
-                 [org.clojure/clojurescript "1.9.229" :scope "provided"]
+                 [org.clojure/clojurescript "1.9.229"]
                  [secretary "1.2.3"]
                  ]
 
@@ -67,21 +61,16 @@
 
                    :dependencies [
                                   [binaryage/devtools "0.8.2"]
-                                  [ring/ring-mock "0.3.0"]
-                                  [ring/ring-devel "1.4.0"]
-                                  [lein-figwheel "0.4.1"]
                                   [org.clojure/tools.nrepl "0.2.11"]
                                   [com.cemerick/piggieback "0.2.1"]
                                   [pjstadig/humane-test-output "0.7.0"]
-                                  [cider/cider-nrepl "0.13.0"]]
+                                  ]
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.5.7"]
-                             [lein-cljsbuild "1.1.4"]
-                             [com.cemerick/clojurescript.test "0.3.3"]]
-
-                   :injections [(require 'pjstadig.humane-test-output)
-                                (pjstadig.humane-test-output/activate!)]
+                             [lein-doo "0.1.7"]
+                             [cider/cider-nrepl "0.13.0"]
+                             ]
 
                    :figwheel {:http-server-root "public"
                               :server-port 3449
@@ -97,15 +86,13 @@
                                               :compiler {:main "russyll.dev"
                                                          :source-map true}}
 
-                                       :test {:source-paths ["src/cljs/russyll"]
+                                       :test {:source-paths ["test/cljs/russyll" "src/cljs/russyll"]
                                               :compiler {:output-to "target/test.js"
-                                                         :target :nodejs
-                                                         :hashbang false
-                                                         :optimizations :simple
-                                                         :pretty-print true}}
+                                                         :output-dir "target/out"
+                                                         :main russyll.runner
+                                                         :optimizations :none
+                                                         }}
                                         }
-                               :test-commands {"unit" ["node" :node-runner "target/test.js"]}
-
                                }
 
 

@@ -1,7 +1,7 @@
 (ns text-test
-  (:require-macros [cemerick.cljs.test
-                    :refer (is deftest with-test run-tests testing test-var)])
-  (:require [cemerick.cljs.test :as t])
+  (:require
+   [cljs.test :refer-macros [deftest testing is]]
+   )
   (:use [text :only [tokenize set-of-vals text-by-model]]
         [orphoep :only [++ --]]
         ))
@@ -14,7 +14,7 @@
 (deftest find-tokens
   (testing "Regex find all tokens"
     (let [res (++ "," (tokenize bef "`"))]
-      (do (println res)
+      (do
           (is (= res aft))
           (dorun (map #(is (= %1 %2)) res aft))
           ))))

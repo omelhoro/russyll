@@ -1,10 +1,7 @@
 (ns syllab-test
-
-
-
-         (:require-macros [cemerick.cljs.test
-                           :refer (is deftest with-test run-tests testing test-var)])
-         (:require [cemerick.cljs.test :as t])
+  (:require
+   [cljs.test :refer-macros [deftest testing is]]
+   )
   (:use [test-data :only [syllabs-test]] [syllab :only [sm1 sm2 sm3 sm4 sm5 syll-single-sys]]))
 
 (defn every-true [v f]
