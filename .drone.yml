@@ -12,11 +12,12 @@ build:
     # run tests
     - lein doo phantom test once
     - ls $HOME/.m2 -aa
+    - echo $HOME
 
 cache:
    mount:
      - node_modules
-     - $HOME/.m2
+     - /drone/.m2
 
 deploy:
   rsync:
