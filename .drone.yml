@@ -11,13 +11,11 @@ build:
     - phantomjs -v
     # run tests
     - lein doo phantom test once
-    - ls $HOME/.m2 -aa
-    - echo $HOME
 
 cache:
    mount:
      - node_modules
-     - /drone/.m2
+     - /root/.m2
 
 deploy:
   rsync:
