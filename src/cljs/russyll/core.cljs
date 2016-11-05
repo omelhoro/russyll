@@ -49,10 +49,14 @@
 
 ;; Handlers
 
-;; -- Self test
 (re-frame/reg-event-db
  :initiliaze
  (fn [_ _] app-db))
+
+;; -- Self test
+
+(defn debug [db]
+  (do (print db) db))
 
 (re-frame/reg-event-db
  :set-current-word
@@ -81,9 +85,6 @@
         (assoc :done true)
         )
     (set-new-word db [])))
-
-(defn debug [db]
-  (do (print db) db))
 
 (re-frame/reg-event-db
  :next-word
