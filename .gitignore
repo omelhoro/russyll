@@ -19,3 +19,4 @@ node_modules/
 *.cache.edn
 out/
 resources/public/js
+m2/
