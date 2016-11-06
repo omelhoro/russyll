@@ -19,6 +19,8 @@
             [lein-environ "1.0.1"]
             [lein-asset-minifier "0.2.2"]]
 
+  :local-repo "./m2"
+
   :ring {:handler russyll.handler/app
          :uberwar-name "russyll.war"}
 
