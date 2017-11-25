@@ -4,16 +4,8 @@ services:
     image: omelhoro1/russyll
     container_name: russyll
     restart: unless-stopped
-    # ports:
-    #   - "3000:3000"
     labels:
       - "traefik.frontend.rule=Host:russyll.igor-fischer.rocks,russyll.fischerops.com"
-    environment:
-      - VIRTUAL_HOST=russyll.igor-fischer.rocks,russyll.fischerops.com
-      - LETSENCRYPT_HOST=russyll.igor-fischer.rocks,russyll.fischerops.com
-      - VIRTUAL_NETWORK=proxy-tier
-      - VIRTUAL_PORT=5000
-      - LETSENCRYPT_EMAIL=fischerig@outlook.com
     networks:
       - proxy-tier
 networks:

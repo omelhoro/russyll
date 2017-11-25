@@ -1,7 +1,7 @@
 FROM clojure
 
 RUN apt-get install curl \
-  && curl --silent --location https://deb.nodesource.com/setup_6.x | bash - \
+  && curl --silent --location https://deb.nodesource.com/setup_9.x | bash - \
   && apt-get install -y nodejs
 
 RUN mkdir /app
