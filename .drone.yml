@@ -22,16 +22,10 @@ pipeline:
     when:
       branch: master
 
-  # cache:
-  #    mount:
-  #      - node_modules
-  #      - m2
-  #
-
   deploy:
     image: drillster/drone-rsync
     user: captain
-    hosts: [ "igor-fischer.rocks" ]
+    hosts: [ "software-unchained.com" ]
     port: 22
     target: /tmp/russyll-${DRONE_COMMIT}/
     include:
