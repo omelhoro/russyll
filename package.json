@@ -7,7 +7,6 @@
 
   },
   "devDependencies": {
-    "express": "^4.16.2",
     "phantomjs-prebuilt": "^2.1.16"    
   },
   "scripts": {
