@@ -1,25 +1,16 @@
-FROM clojure
-
-RUN apt-get install curl \
-  && curl --silent --location https://deb.nodesource.com/setup_9.x | bash - \
-  && apt-get install -y nodejs
+FROM theasp/clojurescript-nodejs:latest AS builder
 
 RUN mkdir /app
+ENV NODE_ENV production
 
 WORKDIR /app
 
 COPY ./project.clj /app
 RUN lein deps
-
-COPY ./package.json /app
-RUN npm install
-
 COPY ./ /app
 
-RUN lein cljsbuild once server
-RUN lein test
 RUN lein uberjar
 
-CMD ["node","app"]
-
-EXPOSE 5000
+FROM nginx AS server
+COPY --from=builder /app/resources/public /usr/share/nginx/html
+EXPOSE 80
