@@ -1,10 +1,12 @@
-(ns syllab
-  (:require [clojure.string :as str]
-            )
-  (:use [ling-data :only [onset-sm4 onset-index]]
-        [orphoep :only [++ -- orpho-single]]
-        [globals :only [sformat]]
-        [translit :only [translit]]))
+(ns russyll.syllab
+  (:require
+    [clojure.string :as str]
+    [russyll.globals :as globals]
+  )
+  (:use [russyll.ling-data :only [onset-sm4 onset-index]]
+        [russyll.orphoep :only [++ -- orpho-single]]
+        [russyll.globals :only [sformat]]
+        [russyll.translit :only [translit]]))
 (enable-console-print!)
 
 (def concluster-pat (let

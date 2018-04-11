@@ -1,9 +1,6 @@
-(ns orphoep
-   (:require [clojure.string]
-             ;#+clj [clojure.data.json :as json]
-             ;#+cljs [goog.net.XhrIo]
-             )
-   (:use [ling-data :only [e-rep-map]]))
+(ns russyll.orphoep
+   (:require [clojure.string])
+   (:use [russyll.ling-data :only [e-rep-map]]))
 
 (def stress-sign "*")
 (def -- clojure.string/replace)

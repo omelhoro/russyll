@@ -1,10 +1,10 @@
-(ns text
+(ns russyll.text
   (:require [clojure.string :as str])
   (:use
-    [globals :only [sformat]]
-    [syllab :only [syll-single]]
-    [orphoep :only [orpho-single ++ --]]
-    [translit :only [translit]]
+    [russyll.globals :only [sformat]]
+    [russyll.syllab :only [syll-single]]
+    [russyll.orphoep :only [orpho-single ++ --]]
+    [russyll.translit :only [translit]]
     ))
 
 (def bef "б`ублики`> <!(декабр`я,) !+_)всегд`а!@#$%^&*()_[при`ятно]; пол`учит н`овый автомоб`иль хоть и нанед`елю ун`ового.")

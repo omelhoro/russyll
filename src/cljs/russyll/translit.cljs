@@ -1,6 +1,6 @@
-(ns translit
-  (:require [globals :as globals])
-  (:use [orphoep :only [++ --]])
+(ns russyll.translit
+  (:require [russyll.globals :as globals])
+  (:use [russyll.orphoep :only [++ --]])
   )
 
 (enable-console-print!)

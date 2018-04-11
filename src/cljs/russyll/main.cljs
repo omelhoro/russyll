@@ -1,4 +1,4 @@
-(ns main)
+(ns russyll.main)
 ;(ns main
 ;  (:require [goog.net.XhrIo]
 ;            [text]
