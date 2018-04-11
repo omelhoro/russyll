@@ -5,7 +5,7 @@ services:
     container_name: russyll
     restart: unless-stopped
     labels:
-      - "traefik.frontend.rule=Host:russyll.igor-fischer.rocks,russyll.fischerops.com,russyll.software-unchained.com"
+      - "traefik.frontend.rule=Host:russyll.fischerops.com,russyll.software-unchained.com"
     networks:
       - proxy-tier
 networks:
