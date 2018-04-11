@@ -2,17 +2,18 @@
   (:require [reagent.core :as reagent :refer [atom]]
             [reagent.session :as session]
             [reagent.core :as r]
-            [text]
+            [russyll.text :as text]
+            [russyll.globals :as globals]
             [re-frame.core :as re-frame]
             [secretary.core :as secretary :include-macros true]
             [goog.events :as events]
             [goog.history.EventType :as EventType])
 
   (:use
-   [globals :only [sformat]]
-   [syllab :only [syll-single]]
-   [orphoep :only [orpho-single ++ --]]
-   [usertest :only [serve-words-rand calc-stats]]
+   [russyll.globals :only [sformat]]
+   [russyll.syllab :only [syll-single]]
+   [russyll.orphoep :only [orpho-single ++ --]]
+   [russyll.usertest :only [serve-words-rand calc-stats]]
    )
   (:import goog.History)
   )
@@ -148,7 +149,7 @@
        {:style {:margin-top "10px"}}
        [:div.progress-bar.progress-bar-success {:style {:width (str @user-progress "%")}}]])))
 
-(def textarea-style {:width "100%" :height 200})
+(def textarea-style {:width "100%" :height 200 :margin-bottom "10px"})
 
 (def models
   [
@@ -159,6 +160,8 @@
    {:i 4 :name "SSP" :short "SM5"}
    ])
 
+(def punctuation-set #{" " "," "?" "." "-" "!" "’" ":"})
+
 (defn textarea []
   (let [
         table (re-frame/subscribe [:key-in-db :table-syllabied])
@@ -168,8 +171,9 @@
         splitted-mapped (re-frame/subscribe [:key-in-db :splitted=mapped])
         ]
     (fn []
-      [:div
+      [:div.panel.panel-default
        [:h2.ribbon (str "Put in some data!")]
+       [:label {:style {:margin-top "20px" :font-size "large"}}  "Choose a syllabification model"]
        [:select.form-control
         {
          :on-change (fn [evt]
@@ -180,15 +184,19 @@
         (for [{:keys [name i]} models]
           [:option {:value i :key i} name])
         ]
+
+       [:label {:style {:margin-top "20px" :font-size "large"}} "Input a text"]
        [:textarea
         {:style textarea-style
          :on-change (fn [evt] (do (re-frame/dispatch [:change-text (-> evt .-target .-value)]) (re-frame/dispatch [:syllaby]))) :value @text-in}]
-       [:pre @text-syllabied]
+       [:label {:style {:margin-top "20px" :font-size "large"}} "This is the output"]
+       [:p {:style {:background "azure"}} @text-syllabied]
+       [:label {:style {:margin-top "20px" :font-size "large"}} "The text in table form (without punctuation)"]
        [:table.table.table-striped.table-bordered.table-hover.table-condensed.syllabied
         [:tbody
          [:tr [:th] (for [{:keys [short name]} models] [:th {:key name :title name} short])]
          (for
-             [[word syll-models] (filter #(not= (first %) " ") @splitted-mapped)]
+             [[word syll-models] (filter #(not (contains? punctuation-set (first %))) @splitted-mapped)]
            [:tr {:key (rand) :value (not= word " ")} [:td word]
             (map-indexed (fn [ix word] [:td {:key ix} word]) syll-models)
             ]
@@ -210,10 +218,10 @@
         done (re-frame/subscribe [:key-in-db :done])
         ]
     (fn []
-      [:div
+      [:div.panel.panel-default {:style {:padding "20px"}}
        [:h2.ribbon "Your turn!"]
        [:h4 "Here you can check yourself: Which model follows your intution?"]
-       [:div.well.bg-warning
+       [:div
         [:strong "Important: "]
         "Set the division with a dash '-': 'игорь' -> 'и-горь'. There will be 10 words to divide."
         [:div.input-group.col-sm-4
@@ -234,9 +242,17 @@
 
 
 (defn home-page []
-  [:div [:h1.header.navbar "Welcome to " [:strong "russyll"] ", the automatic syllable divider"]
+  [:div
    [:div#app-body
+   [:div.jumbotron {:style {:text-align "center"}}
+    [:h1 "Russyll"]
+    [:h3 "Welcome to the automatic syllable divider of Russian. Just type in a text and it gets processed automatically."
+     [:br]
+     ]
+    ]
+
     ((check-yourself))
+
     ((textarea))
     (table-text)
     ]
