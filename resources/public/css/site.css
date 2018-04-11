@@ -4,17 +4,30 @@ body {
   font-size: 1.125em;
   color: #333;
   line-height: 1.5em;
+  background-color: silver;
+  background: linear-gradient(white, lightblue, lightcoral);
+  background-repeat: no-repeat;
+  height: 100%;
 }
 
 #app-body {
   max-width: 800px;
   margin: 0 auto;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding: 10px;
-  background-color: snow;
+  /* background-color: snow; */
 
 }
 
+
+.panel {
+  /* background: silver; */
+  padding: 20px;
+}
+
+.panel>.table-bordered, .panel>.table-responsive>.table-bordered {
+  border: inherit;
+}
 
 h1, h2, h3 {
   color: #000;
@@ -70,11 +83,16 @@ table.syllabied {
   text-decoration:none;
 }
 
+.ribbon {
+  line-height: 1.5;
+  font-size: 35px;
+}
 
 .ribbon {
-  color: white;font-family: Serif;
+  color: white;
+  font-family: sans-serif;
   text-align: center;
-  left: -15px;
+  left: -35px;
   width: 810px;
   background-color:#16a085; /* bg color for center of ribbon */
   border:3px solid #eee; /*border color for center of ribbon */
@@ -112,4 +130,3 @@ table.syllabied {
   right: -45px;
   left: auto;
 }
-
