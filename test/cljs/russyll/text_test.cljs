@@ -2,8 +2,8 @@
   (:require
    [cljs.test :refer-macros [deftest testing is]]
    )
-  (:use [text :only [tokenize set-of-vals text-by-model]]
-        [orphoep :only [++ --]]
+  (:use [russyll.text :only [tokenize set-of-vals text-by-model]]
+        [russyll.orphoep :only [++ --]]
         ))
 
 (def bef "`Игорь.б`ублики`> <!(декабр`я,) !+_)всегд`а!@#$%^&*()_[при`ятно]; пол`учит н`овый автомоб`иль хоть и нанед`елю ун`ового.")

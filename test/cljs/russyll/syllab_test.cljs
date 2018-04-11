@@ -2,7 +2,9 @@
   (:require
    [cljs.test :refer-macros [deftest testing is]]
    )
-  (:use [test-data :only [syllabs-test]] [syllab :only [sm1 sm2 sm3 sm4 sm5 syll-single-sys]]))
+  (:use
+    [russyll.test-data :only [syllabs-test]]
+    [russyll.syllab :only [sm1 sm2 sm3 sm4 sm5 syll-single-sys]]))
 
 (defn every-true [v f]
   (every? true? (map

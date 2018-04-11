@@ -3,7 +3,7 @@
    [cljs.test :refer-macros [deftest testing is]]
    )
   (:use
-   [usertest :only [calc-stats]
+   [russyll.usertest :only [calc-stats]
     ]
     ))
 
