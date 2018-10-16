@@ -14,7 +14,7 @@
     (let [current-word (re-frame/subscribe [:key-in-db :current-word])
           ]
       (is (= [] (:user-history core/app-db)))
-      (is (= "Igor" @current-word))
+      (is (= nil @current-word))
       (re-frame/dispatch-sync [:set-current-word "cool Word"])
       (is (= "cool Word" @current-word))
       (is (= [] (:user-history core/app-db))))
@@ -24,7 +24,10 @@
 (deftest subscriptions
   (testing "The subscriptions should give the right model back"
     (let [text-in (re-frame/subscribe [:key-in-db :text-in])]
-      (is (= core/example-text @text-in)))))
+      (is (= @text-in nil))
+      (re-frame/dispatch-sync [:change-text core/example-text])
+      (is (= core/example-text @text-in))
+      )))
 
 
 (deftest handlers-user-test
