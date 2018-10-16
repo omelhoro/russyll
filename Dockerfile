@@ -1,4 +1,4 @@
-FROM theasp/clojurescript-nodejs:latest AS builder
+FROM clojure:lein-alpine AS frontend-builder
 
 WORKDIR /app
 COPY ./project.clj /app
