@@ -4,57 +4,33 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 [reagent "0.6.0"]
+  :dependencies [[org.clojure/clojure "1.9.0"]
+                 [reagent "0.8.2-SNAPSHOT"]
                  [reagent-utils "0.1.5"]
                  [re-frame "0.8.0"]
-                 [hiccup "1.0.5"]
-                 [org.clojure/core.async "0.2.391"]
-                 [environ "1.0.1"]
-                 [org.clojure/clojurescript "1.9.229"]
+                 [org.clojure/core.async "0.4.474"]
+                 [org.clojure/clojurescript "1.10.339"]
                  [secretary "1.2.3"]
                  ]
 
-  :plugins [[lein-cljsbuild "1.1.4"]
+  :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.0.1"]
-            [lein-asset-minifier "0.2.2"]]
-
-  :ring {:handler russyll.handler/app
-         :uberwar-name "russyll.war"}
+            ]
 
   :min-lein-version "2.5.3"
 
   :uberjar-name "russyll.jar"
 
-  :main russyll.server
-
   :clean-targets ^{:protect false} [:target-path
                                     [:cljsbuild :builds :app :compiler :output-dir]
                                     [:cljsbuild :builds :app :compiler :output-to]]
 
-  :source-paths ["src/clj" "src/cljc"]
-
-  :minify-assets
-  {:assets
-    {"resources/public/css/site.min.css" "resources/public/css/site.css"}}
-
-  :cljsbuild {:builds {:app {:source-paths ["src/cljs" "src/cljc"]
+  :cljsbuild {:builds {:app {:source-paths ["src"]
                              :compiler {:output-to     "resources/public/js/app.js"
                                         :output-dir    "resources/public/js/out"
                                         :asset-path   "js/out"
                                         :optimizations :none
                                         :pretty-print  true}}
-
-                        :server {
-                                 :source-paths ["src/server"]
-                                 :compiler     {:output-dir    "out"
-                                                :output-to     "out/index.js"
-                                                :optimizations :none
-                                                :source-map    true
-                                                :target        :nodejs}
-
-                                 }
-
                        }}
 
   :profiles {:dev {:repl-options {:init-ns russyll.repl}
@@ -67,7 +43,8 @@
                                   ]
 
                    :source-paths ["env/dev/clj"]
-                   :plugins [[lein-figwheel "0.5.7"]
+                   :plugins [
+                              [lein-figwheel "0.5.16"]
                              [lein-doo "0.1.7"]
                              [cider/cider-nrepl "0.13.0"]
                              ]
@@ -86,7 +63,7 @@
                                               :compiler {:main "russyll.dev"
                                                          :source-map true}}
 
-                                       :test {:source-paths ["test/cljs/russyll" "src/cljs/russyll"]
+                                       :test {:source-paths ["test/cljs/russyll" "src"]
                                               :compiler {:output-to "target/test.js"
                                                          :output-dir "target/out"
                                                          :main russyll.runner
@@ -98,7 +75,7 @@
 
                    }
 
-             :uberjar {:hooks [leiningen.cljsbuild minify-assets.plugin/hooks]
+             :uberjar {:hooks [leiningen.cljsbuild]
                        :env {:production true}
                        :aot :all
                        :omit-source true
