@@ -44,8 +44,8 @@
 
                    :source-paths ["env/dev/clj"]
                    :plugins [
-                              [lein-figwheel "0.5.16"]
-                             [lein-doo "0.1.7"]
+                            [lein-figwheel "0.5.16"]
+                             [lein-doo "0.1.10"]
                              [cider/cider-nrepl "0.13.0"]
                              ]
 
