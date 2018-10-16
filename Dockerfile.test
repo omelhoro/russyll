@@ -1,9 +1,11 @@
-FROM theasp/clojurescript-nodejs
+FROM omelhoro1/clj-chrome-headless
 
 WORKDIR /app
-RUN npm i phantomjs-prebuilt
-RUN ln -sf $(pwd)/node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs /usr/local/bin
-RUN phantomjs -v
+
+COPY project.clj /app
+RUN lein deps
+
 COPY ./ /app
-RUN ls -na
-RUN lein doo phantom test once
+
+# RUN lein cloverage
+RUN CHROME_BIN=$(node -p -e "require('puppeteer').executablePath()") lein doo chrome-no-sandbox once
