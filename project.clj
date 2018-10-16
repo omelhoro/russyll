@@ -33,6 +33,21 @@
                                         :pretty-print  true}}
                        }}
 
+   :doo {
+         :debug    true
+         :build    "test"
+         :alias    {:default [:chrome-no-sandbox]}
+         :coverage {:packages ["russyll.core" russyll]
+                    :reporter {:type "text"}}
+         :karma
+                   {:launchers {:chrome-no-sandbox {:plugin "karma-chrome-launcher"
+                                                    :name   "Chrome_no_sandbox"}}
+                    :config    {"customLaunchers"
+                                {"Chrome_no_sandbox" {"base"  "ChromeHeadless"
+                                                      "flags" ["--no-sandbox"]}}}
+                    }
+         }
+
   :profiles {:dev {:repl-options {:init-ns russyll.repl}
 
                    :dependencies [
@@ -46,6 +61,7 @@
                    :plugins [
                             [lein-figwheel "0.5.16"]
                              [lein-doo "0.1.10"]
+                             [lein-cloverage "1.0.10"]
                              [cider/cider-nrepl "0.13.0"]
                              ]
 
