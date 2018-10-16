@@ -7,5 +7,5 @@ COPY ./ /app
 RUN lein uberjar
 
 FROM nginx AS server
-COPY --from=builder /app/resources/public /usr/share/nginx/html
+COPY --from=frontend-builder /app/resources/public /usr/share/nginx/html
 EXPOSE 80
