@@ -56,9 +56,6 @@
 
 ;; -- Self test
 
-(defn debug [db]
-  (do (print db) db))
-
 (re-frame/reg-event-db
  :set-current-word
  (fn [db [_ word]] (assoc db :current-word word)))
@@ -172,7 +169,7 @@
         ]
     (fn []
       [:div.panel.panel-default
-       [:h2.ribbon (str "Put in some data!")]
+       [:div.action-wrapper [:h2.action-header (str "Put in some data!")]]
        [:label {:style {:margin-top "20px" :font-size "large"}}  "Choose a syllabification model"]
        [:select.form-control
         {
@@ -218,8 +215,8 @@
         done (re-frame/subscribe [:key-in-db :done])
         ]
     (fn []
-      [:div.panel.panel-default {:style {:padding "20px"}}
-       [:h2.ribbon "Your turn!"]
+      [:div.panel.panel-default
+       [:div.action-wrapper [:h2.action-header "Your turn!"]]
        [:h4 "Here you can check yourself: Which model follows your intution?"]
        [:div
         [:strong "Important: "]
@@ -245,7 +242,7 @@
   [:div
    [:div#app-body
    [:div.jumbotron {:style {:text-align "center"}}
-    [:h1 "Russyll"]
+    [:h1.display-1 "Russyll"]
     [:h3 "Welcome to the automatic syllable divider of Russian. Just type in a text and it gets processed automatically."
      [:br]
      ]
