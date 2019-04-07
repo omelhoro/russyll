@@ -1,11 +1,12 @@
-version: '2'
+version: "2"
 services:
   russyll:
     image: omelhoro1/russyll
     container_name: russyll
     restart: unless-stopped
     labels:
-      - "traefik.frontend.rule=Host:russyll.fischerops.com,russyll.software-unchained.com"
+      - traefik.frontend.rule=Host:russyll.fischerops.com,russyll.software-unchained.com
+      - traefik.enable=true
     networks:
       - proxy-tier
 networks:
