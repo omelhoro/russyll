@@ -1,30 +1,32 @@
 pipeline:
-
   docker-test:
     group: build
-    image: plugins/docker
-    storage_driver: vfs
-    repo: omelhoro1/russyll
-    tags: test
-    secrets: [ docker_username, docker_password ]
-    dry_run: true
-    dockerfile: Dockerfile.test
+    image: docker
+    secrets: [docker_username, docker_password]
+    commands:
+      - docker build -t omelhoro1/russyll:test -f ./Dockerfile.test .
     when:
       branch: master
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   docker:
     group: build
-    image: plugins/docker
-    storage_driver: vfs
-    repo: omelhoro1/russyll
-    secrets: [ docker_username, docker_password ]
+    image: docker
+    secrets: [docker_username, docker_password]
+    commands:
+      - docker build -t omelhoro1/russyll:latest .
+      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - docker push omelhoro1/russyll
     when:
       branch: master
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   deploy:
     image: drillster/drone-rsync
     user: captain
-    hosts: [ "software-unchained.com" ]
+    hosts: ["software-unchained.com"]
     port: 22
     target: /tmp/russyll-${DRONE_COMMIT}/
     include:
@@ -32,7 +34,7 @@ pipeline:
     exclude:
       - "**.*"
     delete: false
-    secrets: [ rsync_key ]
+    secrets: [rsync_key]
     script:
       - docker-compose -f /tmp/russyll-${DRONE_COMMIT}/docker-compose.yml pull
       - docker-compose -f /tmp/russyll-${DRONE_COMMIT}/docker-compose.yml -p russyll up -d
